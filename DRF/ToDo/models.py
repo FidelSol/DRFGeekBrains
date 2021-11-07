@@ -19,7 +19,7 @@ class ToDo(models.Model):
     mod_time = models.DateTimeField(auto_now=True, blank=True, null=True, verbose_name="Дата изменения")
     creator = models.ForeignKey(CustomUser, on_delete=models.SET_NULL, null=True, blank=True,
                                     related_name='todos', verbose_name="Создатель")
-    status = models.BooleanField(default=True, verbose_name="Создатель")
+    status = models.BooleanField(default=True, verbose_name="Активность")
 
     objects = models.Manager()
 

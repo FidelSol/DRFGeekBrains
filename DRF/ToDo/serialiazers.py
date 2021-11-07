@@ -15,7 +15,7 @@ class CRUDProjectSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Project
-        fields = ['__all__']
+        fields = ['id', 'name', 'url', 'users']
 
 class PresentToDoSerializer(serializers.ModelSerializer):
     text = serializers.CharField(max_length=1500, required=False)
@@ -23,10 +23,11 @@ class PresentToDoSerializer(serializers.ModelSerializer):
     creator = serializers.StringRelatedField(required=False)
     add_time = serializers.DateTimeField(required=False, format="%d.%m.%Y %H:%M")
     mod_time = serializers.DateTimeField(required=False, format="%d.%m.%Y %H:%M")
+    status = serializers.BooleanField(required=False, default=True)
 
     class Meta:
         model = ToDo
-        fields = ['__all__']
+        fields = ['add_time', 'mod_time', 'creator', 'project', 'text', 'id', 'status']
 
 
 class CRUDToDoSerializer(serializers.ModelSerializer):
@@ -35,10 +36,11 @@ class CRUDToDoSerializer(serializers.ModelSerializer):
     creator = serializers.PrimaryKeyRelatedField(queryset=CustomUser.objects.all(), required=False, allow_null=True)
     add_time = serializers.DateTimeField(required=False, format="%d.%m.%Y %H:%M")
     mod_time = serializers.DateTimeField(required=False, format="%d.%m.%Y %H:%M")
+    status = serializers.BooleanField(required=False, default=True)
 
     class Meta:
         model = ToDo
-        fields = ['__all__']
+        fields = ['add_time', 'mod_time', 'creator', 'project', 'text', 'id', 'status']
 
 
 
