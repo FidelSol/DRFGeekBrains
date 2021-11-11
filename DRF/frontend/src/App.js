@@ -1,17 +1,30 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import AuthorList from './components/Author.js';
-import AppFooter from './components/footer.js';
-import AppMenu from './components/menu.js';
+import UserList from './components/Users.js';
+import ProjectList from './components/Projects.js';
+import ProjectFilteredList from './components/Project.js'
+import ToDoList from './components/ToDos.js';
 import axios from 'axios';
+import {BrowserRouter, Route, Link, Routes} from 'react-router-dom'
+
+const NotFound404 = ({ location }) => {
+  return (
+    <div>
+        <h1>Страница по адресу '{location.pathname}' не найдена</h1>
+    </div>
+  )
+}
+
+
 
 class App extends React.Component {
 
    constructor(props) {
        super(props)
        this.state = {
-           'authors': []
+           'users': [],
+           'projects': [],
+           'todos': []
        }
    }
 
@@ -25,16 +38,59 @@ class App extends React.Component {
                    }
                )
            }).catch(error => console.log(error))
+
+            axios.get('http://127.0.0.1:8000/api/v1/presentprojects')
+           .then(response => {
+               const projects = response.data
+                   this.setState(
+                   {
+                       'projects': projects
+                   }
+               )
+           }).catch(error => console.log(error))
+
+       axios.get('http://127.0.0.1:8000/api/v1/presenttodos')
+           .then(response => {
+               const todos = response.data
+                   this.setState(
+                   {
+                       'todos': todos
+                   }
+               )
+           }).catch(error => console.log(error))
+
     }
 
 
    render () {
        return (
-           <div>
-               <AppMenu />
-               <AuthorList authors={this.state.authors} />
-               <AppFooter />
-           </div>
+            <div className="App">
+                <BrowserRouter>
+                    <nav>
+                        <ul>
+                            <li>
+                                <Link to='/'>Users</Link>
+                            </li>
+                            <li>
+                                <Link to='/projects'>Projects</Link>
+                            </li>
+                            <li>
+                                <Link to='/todos'>ToDos</Link>
+                            </li>
+                        </ul>
+                    </nav>
+                    <Routes>
+                            <Route path='/' element={() => <UserList items={this.state.users} />}  />
+                            <Route path='/projects' element={() => <ProjectList items={this.state.projects} />} />
+                            <Route path='/todos' element={() => <ToDoList items={this.state.todos} />} />
+                            <Route path='/project/:id'>
+                                <ProjectFilteredList items={this.state.projects} />
+                            </Route>
+
+                            <Route component={NotFound404} />
+                    </Routes>
+                </BrowserRouter>
+            </div>
 
 
        )
