@@ -29,35 +29,35 @@ class App extends React.Component {
    }
 
    componentDidMount() {
-       axios.get('http://127.0.0.1:8000/api/v1/users')
-           .then(response => {
+            axios.get('http://127.0.0.1:8000/api/v1/users')
+            .then(response => {
                const authors = response.data
                    this.setState(
                    {
                        'authors': authors
                    }
                )
-           }).catch(error => console.log(error))
+            }).catch(error => console.log(error))
 
             axios.get('http://127.0.0.1:8000/api/v1/presentprojects')
-           .then(response => {
+            .then(response => {
                const projects = response.data
                    this.setState(
                    {
                        'projects': projects
                    }
                )
-           }).catch(error => console.log(error))
+            }).catch(error => console.log(error))
 
-       axios.get('http://127.0.0.1:8000/api/v1/presenttodos')
-           .then(response => {
+            axios.get('http://127.0.0.1:8000/api/v1/presenttodos')
+            .then(response => {
                const todos = response.data
                    this.setState(
                    {
                        'todos': todos
                    }
                )
-           }).catch(error => console.log(error))
+            }).catch(error => console.log(error))
 
     }
 
@@ -86,7 +86,6 @@ class App extends React.Component {
                             <Route path='/project/:id'>
                                 <ProjectFilteredList items={this.state.projects} />
                             </Route>
-
                             <Route component={NotFound404} />
                     </Routes>
                 </BrowserRouter>

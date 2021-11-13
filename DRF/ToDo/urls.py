@@ -13,6 +13,4 @@ router.register(r'crudtodos', views.CRUDToDoViewSet, basename='crudtodos')
 urlpatterns = [
     # API
     path('api/v1/', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-
 ]
