@@ -11,4 +11,4 @@ class UserViewSet(mixins.UpdateModelMixin, mixins.ListModelMixin, mixins.Retriev
     serializer_class = UserSerializer
     parser_classes = [JSONParser, FormParser, MultiPartParser]
     renderer_classes = [JSONRenderer, BrowsableAPIRenderer]
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]

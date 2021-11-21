@@ -15,7 +15,7 @@ class PresentProjectViewSet(viewsets.ModelViewSet):
     parser_classes = [JSONParser, FormParser, MultiPartParser]
     pagination_class = ProjectLimitOffsetPagination
     filterset_class = ProjectFilter
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
 class CRUDProjectViewSet(viewsets.ModelViewSet):
     queryset = Project.objects.all()
@@ -31,7 +31,7 @@ class PresentToDoViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, views
     parser_classes = [JSONParser, FormParser, MultiPartParser]
     pagination_class = ToDoLimitOffsetPagination
     filterset_class = PresentToDoFilter
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
 class CRUDToDoViewSet(mixins.CreateModelMixin, mixins.UpdateModelMixin, mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.DestroyModelMixin, viewsets.GenericViewSet):
     queryset = ToDo.objects.all()
@@ -39,7 +39,7 @@ class CRUDToDoViewSet(mixins.CreateModelMixin, mixins.UpdateModelMixin, mixins.L
     parser_classes = [JSONParser, FormParser, MultiPartParser]
     pagination_class = ToDoLimitOffsetPagination
     filterset_class = CRUDToDoFilter
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def destroy(self, request, *args, **kwargs):
         id = self.kwargs['pk']
