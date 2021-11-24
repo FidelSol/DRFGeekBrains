@@ -15,7 +15,7 @@ class PresentProjectViewSet(viewsets.ModelViewSet):
     parser_classes = [JSONParser, FormParser, MultiPartParser]
     pagination_class = ProjectLimitOffsetPagination
     filterset_class = ProjectFilter
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
 class CRUDProjectViewSet(viewsets.ModelViewSet):
     queryset = Project.objects.all()
@@ -24,6 +24,12 @@ class CRUDProjectViewSet(viewsets.ModelViewSet):
     pagination_class = ProjectLimitOffsetPagination
     filterset_class = ProjectFilter
     # permission_classes = [IsAuthenticated]
+
+    def get_serializer_class(self):
+        if self.request.method in ['GET']:
+            return PresentProjectSerializer
+        return CRUDProjectSerializer
+
 
 class PresentToDoViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     queryset = ToDo.objects.all()
