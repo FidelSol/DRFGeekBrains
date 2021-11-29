@@ -34,4 +34,9 @@ class UserSerializer(serializers.ModelSerializer):
         return instance
 
 
+# Пользователь V2
+class UserSerializerV2(serializers.ModelSerializer):
 
+    class Meta:
+        model = CustomUser
+        fields = ['id', 'username', 'first_name', 'last_name', 'is_active', 'email', 'password', 'is_superuser', 'is_staff']
