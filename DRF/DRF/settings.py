@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "graphene_django",
     'rest_framework',
     'apipoint',
     'ToDo',
@@ -47,9 +48,10 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
     'DEFAULT_VERSIONING_CLASS': 'rest_framework.versioning.QueryParameterVersioning',
+}
 
-
-
+GRAPHENE = {
+    "SCHEMA": "DRF.schema.schema"
 }
 
 MIDDLEWARE = [
