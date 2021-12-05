@@ -7,7 +7,8 @@ import ToDoList from './components/ToDos.js';
 import axios from 'axios';
 import {BrowserRouter, Route, Link, Routes} from 'react-router-dom'
 import LoginForm from './components/Auth.js'
-import UserLogout from './components/Exit.js'
+import ProjectForm from './components/ProjectForm.js'
+import ToDoForm from './components/ToDoForm.js'
 import Cookies from 'universal-cookie';
 
 const NotFound404 = ({ location }) => {
@@ -109,6 +110,48 @@ class App extends React.Component {
         }).catch(error => alert('Неверный логин или пароль'))
       }
 
+    deleteProject(id) {
+        const headers = this.get_headers()
+        axios.delete(`http://127.0.0.1:8000/apiv1/crudprojects/${id}`, {headers: headers})
+            .then(response => {
+              this.setState({projects: this.state.projects.filter((item)=>item.id !== id)})
+            }).catch(error => console.log(error))
+  }
+
+    deleteToDo(id) {
+        const headers = this.get_headers()
+        axios.delete(`http://127.0.0.1:8000/apiv1/crudtodos/${id}`, {headers: headers})
+            .then(response => {
+              this.setState({todos: this.state.todos.filter((item)=>item.id !== id)})
+            }).catch(error => console.log(error))
+  }
+
+  createProject(name, users) {
+    const headers = this.get_headers()
+    const data = {name: name, users: users}
+    axios.post(`http://127.0.0.1:8000/api/v1/crudprojects/`, data, {headers: headers})
+        .then(response => {
+          let new_project = response.data
+          const users = [this.state.users.filter((item) => item.id === new_project.users)[0]]
+          new_project.users = users
+          this.setState({users: [...this.state.users, new_project]})
+        }).catch(error => console.log(error))
+  }
+
+  createToDo(text, project) {
+    const headers = this.get_headers()
+    const data = {text: text, project: project}
+    axios.post(`http://127.0.0.1:8000/api/v1/crudtodos/`, data, {headers: headers})
+        .then(response => {
+          let new_todo = response.data
+          const project = [this.state.projects.filter((item) => item.id === new_todo.project)[0]]
+          new_todo.project = project
+          this.setState({projects: [...this.state.projects, new_todo]})
+        }).catch(error => console.log(error))
+  }
+
+
+
    render () {
        return (
             <div className="App">
@@ -131,8 +174,10 @@ class App extends React.Component {
                     </nav>
                     <Routes>
                             <Route path='/' element={() => <UserList items={this.state.users} />}  />
-                            <Route path='/projects' element={() => <ProjectList items={this.state.projects} />} />
-                            <Route path='/todos' element={() => <ToDoList items={this.state.todos} />} />
+                            <Route exact path='/projects/create' component={() => <ProjectForm createProject={(name, users) => this.createProject(name, users)} />}  />
+                            <Route path='/projects' element={() => <ProjectList items={this.state.projects} deleteProject={(id)=>this.deleteProject(id)} />} />
+                             <Route exact path='/todos/create' component={() => <ToDoForm createToDo={(text, project) => this.createToDo(text, project)} />}  />
+                            <Route path='/todos' element={() => <ToDoList items={this.state.todos} deleteToDo={(id)=>this.deleteToDo(id)} />} />
                             <Route path='/project/:id'>
                                 <ProjectFilteredList items={this.state.projects} />
                             </Route>
