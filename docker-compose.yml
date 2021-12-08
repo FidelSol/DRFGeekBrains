@@ -17,7 +17,18 @@ services:
     ports:
       - 8080:8080
     command:
-      - python3 manage.py migrate && manage.py runserver 0.0.0.0:8080
-
+      bash -c "
+      python3 manage.py migrate && manage.py runserver 0.0.0.0:8080
+      gunicorn DRF.wsgi -b 0.0.0.0:8080
+      "
     depends_on:
       - db
+
+  nginx:
+    build: ./nginx
+    ports:
+      - 80:80
+    depends_on:
+      - backend
+
+
