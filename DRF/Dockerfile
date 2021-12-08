@@ -6,4 +6,3 @@ RUN pip3 install --upgrade pip
 RUN pip3 install pipenv
 
 COPY ./ ./
-RUN pipenv sync
