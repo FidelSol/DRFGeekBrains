@@ -10,3 +10,25 @@ services:
       POSTGRES_USER: 'myprojectuser'
       POSTGRES_PASSWORD: 'password'
       POSTGRES_DB: apipoint
+
+  backend:
+    build: ./DRF
+    privileged: true
+    ports:
+      - 8080:8080
+    command:
+      bash -c "
+      python3 manage.py migrate && manage.py runserver 0.0.0.0:8080
+      gunicorn DRF.wsgi -b 0.0.0.0:8080
+      "
+    depends_on:
+      - db
+
+  nginx:
+    build: ./nginx
+    ports:
+      - 80:80
+    depends_on:
+      - backend
+
+
